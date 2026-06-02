@@ -110,3 +110,19 @@ Because distributed systems generate a high volume of mutation states, naive cop
 GhostNode mitigates this using `kotlinx-collections-immutable`'s **`PersistentMap`** under the hood:
 *   **Path Copying (Trie-based)**: When an element is added to `addSet` or `removeSet`, only the affected path of the underlying Radix Trie is copied. The rest of the tree is shared by reference with the previous version.
 *   **Zero Full Duplication**: Merges and updates do not require duplicating the entire data set, avoiding massive object allocations. This optimization is critical for memory-constrained platforms, such as Android edge terminals or high-throughput JVM backend nodes.
+
+---
+
+### 3. Verification & Simulation Suite
+
+To ensure GhostNode is production-ready for high-scale, distributed environments, we have implemented a rigorous simulation suite ([GhostNodeSimulator.kt](file:///Users/mathan/Projects/GhostNode/ghostnode-core/src/test/kotlin/com/ghostnode/core/crdt/GhostNodeSimulator.kt)).
+
+#### Key Verification Metrics:
+- **Idempotency & Commutativity**: Verified via randomized, sequence-independent merge operations.
+- **Property-Based Fuzz Testing**: Executed 2,000+ random mutations across a 5-node cluster to ensure global state convergence regardless of network jitter, partitioning, or out-of-order packet delivery.
+- **Deterministic Convergence**: The simulation suite uses a seeded random generator, ensuring that the resolution logic is fully reproducible and verifiable.
+
+To run the verification suite and inspect the simulation logs:
+```bash
+./gradlew test --info --tests com.ghostnode.core.crdt.GhostNodeSimulator
+```

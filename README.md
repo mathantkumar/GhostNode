@@ -107,3 +107,9 @@ To build the project and execute all unit tests, run the following command in th
 ```bash
 ./gradlew test
 ```
+
+To run the property-based verification simulation suite and check the log outputs:
+
+```bash
+./gradlew test --info --tests com.ghostnode.core.crdt.GhostNodeSimulator
+```
