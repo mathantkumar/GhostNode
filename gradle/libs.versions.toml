@@ -1,0 +1,10 @@
+[versions]
+kotlin = "2.1.21"
+kotlinx-collections-immutable = "0.3.8"
+junit = "5.11.4"
+
+[libraries]
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
