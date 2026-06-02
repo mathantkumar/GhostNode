@@ -83,14 +83,23 @@ flowchart TB
 
 ### 1. Consistency Model: Strong Eventual Consistency (SEC)
 
-GhostNode implements the **LWW-Element-Set** (Last-Writer-Wins) Conflict-Free Replicated Data Type (CRDT) to achieve **Strong Eventual Consistency (SEC)**. 
+GhostNode implements the **LWW-Element-Set** (Last-Writer-Wins) CRDT to achieve **Strong Eventual Consistency (SEC)**. 
 
-Under SEC, replicas that have received the same set of updates are guaranteed to converge to the exact same state automatically, without requiring expensive consensus protocols (like Paxos or Raft) or manual intervention. 
+Unlike traditional eventual consistency (where replicas can temporarily diverge and require manual conflict resolution or custom rules), SEC guarantees that any two replicas that have received the same set of updates will converge to the **exact same state automatically**. This process does not require expensive consensus coordination protocols (like Paxos or Raft).
 
-Convergence is mathematically guaranteed because the merge operation (`LWWElementSet.merge`) exhibits three algebraic properties:
-*   **Commutative ($a \sqcup b = b \sqcup a$)**: The order in which updates are received does not affect the final state.
-*   **Associative ($(a \sqcup b) \sqcup c = a \sqcup (b \sqcup c)$)**: Grouping of merges does not affect the final state.
-*   **Idempotent ($a \sqcup a = a$)**: Receiving or applying duplicate updates has no side effects.
+This convergence is guaranteed by design because the merge operation (`LWWElementSet.merge`) behaves as a mathematical semi-lattice. In simple terms, merging state satisfies three key algebraic properties:
+
+1. **Commutativity** (Order doesn't matter): 
+   * `Merge(State A, State B) == Merge(State B, State A)`
+   * Replicas can receive updates in different orders and still end up with the same final state.
+   
+2. **Associativity** (Grouping doesn't matter): 
+   * `Merge(Merge(State A, State B), State C) == Merge(State A, Merge(State B, State C))`
+   * The grouping of state merges across network segments has no impact on the final outcome.
+   
+3. **Idempotency** (Duplicates don't matter): 
+   * `Merge(State A, State A) == State A`
+   * Receiving the same update multiple times (e.g., due to network retries) does not alter the state.
 
 ---
 
