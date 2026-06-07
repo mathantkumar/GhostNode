@@ -126,3 +126,26 @@ To run the verification suite and inspect the simulation logs:
 ```bash
 ./gradlew test --info --tests com.ghostnode.core.crdt.GhostNodeSimulator
 ```
+
+---
+
+### 4. Production Readiness & Enterprise Architecture
+
+To support high-scale, production deployments (such as POS terminal fleets, high-throughput cloud syncing, and microservices architecture), GhostNode integrates advanced features for serialization, telemetry, scaling compaction, and framework usability.
+
+#### Implementation Strategy Matrix
+
+| Requirement | Implementation Strategy | Why? |
+| :--- | :--- | :--- |
+| **Persistence** | `kotlinx.serialization` (JSON/Protobuf compatible) with surrogates. | Guarantees safe database storage (PostgreSQL/DynamoDB) and schema evolution across versions (e.g. defaulting new fields on older schemas). |
+| **Telemetry** | Micrometer Integration (`ghostnode.merge.duration`, `ghostnode.conflicts.resolved`, `ghostnode.state.size`). | Provides full visibility into processing times, hot-keys conflict ratios, and memory footprint in production dashboards. |
+| **Scaling** | Tombstone Compaction (`LWWElementSet.compact`). | Prunes deleted entries older than $X$ days, preventing memory leaks and infinite growth of the dataset. |
+| **Usability** | Spring Boot Auto-Configuration (`ghostnode-spring-boot-starter`). | Provides `@EnableGhostNode` configuration, auto-registers beans, hooks metrics, and schedules compaction automatically. |
+| **Safety** | Vector Clock Pruning (`VectorClock.prune`). | Prunes metadata records for inactive node IDs older than $X$ days to keep network sync payload sizes constant. |
+
+#### Architectural Features Detailing:
+1. **Schema Evolution**: Using serialization surrogates (e.g. `VectorClockSurrogate`), version 1 data files are parsed without crashing, defaulting new properties (like `lastSeen` metadata) gracefully to empty states.
+2. **Lazy Merging**: A thread-safe `LazyMergeSet` wrapper buffers incoming network synchronization messages in a concurrent queue. State merging is executed lazily on-demand when the reader queries elements, significantly reducing merge overhead during high write-throughput periods.
+3. **Structured Logging**: Logging maps are injected via SLF4J at debug levels, enabling developers to trace specific key resolution paths and clock comparisons during production investigations.
+4. **Event Bus Callback Hooks**: Exposes a Spring-native `GhostNodeEventPublisher` publishing `GhostNodeMergeEvent` events, allowing reactive layers (e.g., UI updates, real-time sync relays) to react dynamically to CRDT convergence states.
+

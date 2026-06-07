@@ -2,6 +2,8 @@ package com.ghostnode.core.crdt
 
 import com.ghostnode.core.clock.VectorClock
 
+import kotlinx.serialization.Serializable
+
 /**
  * An immutable Last-Writer-Wins register that pairs a [value] with its
  * wall-clock [timestamp] and causal [clock] context.
@@ -17,6 +19,7 @@ import com.ghostnode.core.clock.VectorClock
  *   at which this value was written.
  * @property clock the [VectorClock] capturing the causal context of this write.
  */
+@Serializable
 data class LWWRegister<T>(
     val value: T,
     val timestamp: Long,
