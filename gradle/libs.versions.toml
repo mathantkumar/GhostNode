@@ -6,6 +6,8 @@ micrometer = "1.14.3"
 spring-boot = "3.4.2"
 slf4j = "2.0.16"
 junit = "5.11.4"
+kotlinx-binarycompatibilityvalidator = "0.16.3"
+dependencycheck = "10.0.4"
 
 [libraries]
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
@@ -20,4 +22,6 @@ spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-star
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+kotlinx-binarycompatibilityvalidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinx-binarycompatibilityvalidator" }
+dependencycheck = { id = "org.owasp.dependencycheck", version.ref = "dependencycheck" }
 

@@ -1,0 +1,160 @@
+public final class com/ghostnode/core/clock/CausalOrder : java/lang/Enum {
+	public static final field AFTER Lcom/ghostnode/core/clock/CausalOrder;
+	public static final field BEFORE Lcom/ghostnode/core/clock/CausalOrder;
+	public static final field CONCURRENT Lcom/ghostnode/core/clock/CausalOrder;
+	public static final field EQUAL Lcom/ghostnode/core/clock/CausalOrder;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/ghostnode/core/clock/CausalOrder;
+	public static fun values ()[Lcom/ghostnode/core/clock/CausalOrder;
+}
+
+public final class com/ghostnode/core/clock/VectorClock : java/lang/Comparable {
+	public static final field Companion Lcom/ghostnode/core/clock/VectorClock$Companion;
+	public fun <init> ()V
+	public fun <init> (Lkotlinx/collections/immutable/PersistentMap;Lkotlinx/collections/immutable/PersistentMap;)V
+	public synthetic fun <init> (Lkotlinx/collections/immutable/PersistentMap;Lkotlinx/collections/immutable/PersistentMap;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun compareTo (Lcom/ghostnode/core/clock/VectorClock;)I
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public final fun component1 ()Lkotlinx/collections/immutable/PersistentMap;
+	public final fun component2 ()Lkotlinx/collections/immutable/PersistentMap;
+	public final fun copy (Lkotlinx/collections/immutable/PersistentMap;Lkotlinx/collections/immutable/PersistentMap;)Lcom/ghostnode/core/clock/VectorClock;
+	public static synthetic fun copy$default (Lcom/ghostnode/core/clock/VectorClock;Lkotlinx/collections/immutable/PersistentMap;Lkotlinx/collections/immutable/PersistentMap;ILjava/lang/Object;)Lcom/ghostnode/core/clock/VectorClock;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get (Ljava/lang/String;)J
+	public final fun getEntries ()Lkotlinx/collections/immutable/PersistentMap;
+	public final fun getLastSeen ()Lkotlinx/collections/immutable/PersistentMap;
+	public fun hashCode ()I
+	public final fun increment (Ljava/lang/String;J)Lcom/ghostnode/core/clock/VectorClock;
+	public static synthetic fun increment$default (Lcom/ghostnode/core/clock/VectorClock;Ljava/lang/String;JILjava/lang/Object;)Lcom/ghostnode/core/clock/VectorClock;
+	public final fun merge (Lcom/ghostnode/core/clock/VectorClock;)Lcom/ghostnode/core/clock/VectorClock;
+	public final fun prune (JJ)Lcom/ghostnode/core/clock/VectorClock;
+	public static synthetic fun prune$default (Lcom/ghostnode/core/clock/VectorClock;JJILjava/lang/Object;)Lcom/ghostnode/core/clock/VectorClock;
+	public final fun relationTo (Lcom/ghostnode/core/clock/VectorClock;)Lcom/ghostnode/core/clock/CausalOrder;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/ghostnode/core/clock/VectorClock$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/ghostnode/core/clock/VectorClockSerializer : kotlinx/serialization/KSerializer {
+	public static final field INSTANCE Lcom/ghostnode/core/clock/VectorClockSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/ghostnode/core/clock/VectorClock;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/ghostnode/core/clock/VectorClock;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public abstract interface class com/ghostnode/core/crdt/ConflictResolver {
+	public abstract fun resolve (Ljava/lang/Object;Ljava/lang/Object;Lcom/ghostnode/core/clock/VectorClock;Lcom/ghostnode/core/clock/VectorClock;)Ljava/lang/Object;
+}
+
+public final class com/ghostnode/core/crdt/GhostNodeMetrics {
+	public static final field INSTANCE Lcom/ghostnode/core/crdt/GhostNodeMetrics;
+	public final fun bindTo (Lio/micrometer/core/instrument/MeterRegistry;)V
+	public final fun incrementConflictsResolved ()V
+	public final fun recordMergeDuration (J)V
+	public final fun reportStateSize (I)V
+}
+
+public final class com/ghostnode/core/crdt/LWWElementSet {
+	public static final field Companion Lcom/ghostnode/core/crdt/LWWElementSet$Companion;
+	public fun <init> ()V
+	public fun <init> (Lkotlinx/collections/immutable/PersistentMap;Lkotlinx/collections/immutable/PersistentMap;Lcom/ghostnode/core/crdt/LWWElementSet$Bias;Ljava/util/List;)V
+	public synthetic fun <init> (Lkotlinx/collections/immutable/PersistentMap;Lkotlinx/collections/immutable/PersistentMap;Lcom/ghostnode/core/crdt/LWWElementSet$Bias;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun add (Ljava/lang/Object;JLcom/ghostnode/core/clock/VectorClock;)Lcom/ghostnode/core/crdt/LWWElementSet;
+	public final fun addListener (Lkotlin/jvm/functions/Function1;)Lcom/ghostnode/core/crdt/LWWElementSet;
+	public final fun compact (JJ)Lcom/ghostnode/core/crdt/LWWElementSet;
+	public static synthetic fun compact$default (Lcom/ghostnode/core/crdt/LWWElementSet;JJILjava/lang/Object;)Lcom/ghostnode/core/crdt/LWWElementSet;
+	public final fun component1 ()Lkotlinx/collections/immutable/PersistentMap;
+	public final fun component2 ()Lkotlinx/collections/immutable/PersistentMap;
+	public final fun component3 ()Lcom/ghostnode/core/crdt/LWWElementSet$Bias;
+	public final fun component4 ()Ljava/util/List;
+	public final fun copy (Lkotlinx/collections/immutable/PersistentMap;Lkotlinx/collections/immutable/PersistentMap;Lcom/ghostnode/core/crdt/LWWElementSet$Bias;Ljava/util/List;)Lcom/ghostnode/core/crdt/LWWElementSet;
+	public static synthetic fun copy$default (Lcom/ghostnode/core/crdt/LWWElementSet;Lkotlinx/collections/immutable/PersistentMap;Lkotlinx/collections/immutable/PersistentMap;Lcom/ghostnode/core/crdt/LWWElementSet$Bias;Ljava/util/List;ILjava/lang/Object;)Lcom/ghostnode/core/crdt/LWWElementSet;
+	public final fun elements (Lcom/ghostnode/core/crdt/LWWElementSet$Bias;)Ljava/util/Set;
+	public static synthetic fun elements$default (Lcom/ghostnode/core/crdt/LWWElementSet;Lcom/ghostnode/core/crdt/LWWElementSet$Bias;ILjava/lang/Object;)Ljava/util/Set;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAddSet ()Lkotlinx/collections/immutable/PersistentMap;
+	public final fun getChangeListeners ()Ljava/util/List;
+	public final fun getDefaultBias ()Lcom/ghostnode/core/crdt/LWWElementSet$Bias;
+	public final fun getRemoveSet ()Lkotlinx/collections/immutable/PersistentMap;
+	public fun hashCode ()I
+	public final fun lookup (Ljava/lang/Object;Lcom/ghostnode/core/crdt/LWWElementSet$Bias;)Z
+	public static synthetic fun lookup$default (Lcom/ghostnode/core/crdt/LWWElementSet;Ljava/lang/Object;Lcom/ghostnode/core/crdt/LWWElementSet$Bias;ILjava/lang/Object;)Z
+	public final fun merge (Lcom/ghostnode/core/crdt/LWWElementSet;)Lcom/ghostnode/core/crdt/LWWElementSet;
+	public final fun remove (Ljava/lang/Object;JLcom/ghostnode/core/clock/VectorClock;)Lcom/ghostnode/core/crdt/LWWElementSet;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/ghostnode/core/crdt/LWWElementSet$Bias : java/lang/Enum {
+	public static final field ADD Lcom/ghostnode/core/crdt/LWWElementSet$Bias;
+	public static final field REMOVE Lcom/ghostnode/core/crdt/LWWElementSet$Bias;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/ghostnode/core/crdt/LWWElementSet$Bias;
+	public static fun values ()[Lcom/ghostnode/core/crdt/LWWElementSet$Bias;
+}
+
+public final class com/ghostnode/core/crdt/LWWElementSet$Companion {
+	public final fun serializer (Lkotlinx/serialization/KSerializer;)Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/ghostnode/core/crdt/LWWElementSetResolver : com/ghostnode/core/crdt/ConflictResolver {
+	public fun <init> ()V
+	public fun resolve (Lcom/ghostnode/core/crdt/LWWElementSet;Lcom/ghostnode/core/crdt/LWWElementSet;Lcom/ghostnode/core/clock/VectorClock;Lcom/ghostnode/core/clock/VectorClock;)Lcom/ghostnode/core/crdt/LWWElementSet;
+	public synthetic fun resolve (Ljava/lang/Object;Ljava/lang/Object;Lcom/ghostnode/core/clock/VectorClock;Lcom/ghostnode/core/clock/VectorClock;)Ljava/lang/Object;
+}
+
+public final class com/ghostnode/core/crdt/LWWElementSetSerializer : kotlinx/serialization/KSerializer {
+	public fun <init> (Lkotlinx/serialization/KSerializer;)V
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/ghostnode/core/crdt/LWWElementSet;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/ghostnode/core/crdt/LWWElementSet;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/ghostnode/core/crdt/LWWRegister {
+	public static final field Companion Lcom/ghostnode/core/crdt/LWWRegister$Companion;
+	public fun <init> (Ljava/lang/Object;JLcom/ghostnode/core/clock/VectorClock;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()J
+	public final fun component3 ()Lcom/ghostnode/core/clock/VectorClock;
+	public final fun copy (Ljava/lang/Object;JLcom/ghostnode/core/clock/VectorClock;)Lcom/ghostnode/core/crdt/LWWRegister;
+	public static synthetic fun copy$default (Lcom/ghostnode/core/crdt/LWWRegister;Ljava/lang/Object;JLcom/ghostnode/core/clock/VectorClock;ILjava/lang/Object;)Lcom/ghostnode/core/crdt/LWWRegister;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getClock ()Lcom/ghostnode/core/clock/VectorClock;
+	public final fun getTimestamp ()J
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public synthetic class com/ghostnode/core/crdt/LWWRegister$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public fun <init> (Lkotlinx/serialization/KSerializer;)V
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/ghostnode/core/crdt/LWWRegister;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/ghostnode/core/crdt/LWWRegister;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/ghostnode/core/crdt/LWWRegister$Companion {
+	public final fun serializer (Lkotlinx/serialization/KSerializer;)Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/ghostnode/core/crdt/LazyMergeSet {
+	public fun <init> ()V
+	public fun <init> (Lcom/ghostnode/core/crdt/LWWElementSet;)V
+	public synthetic fun <init> (Lcom/ghostnode/core/crdt/LWWElementSet;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun compact (JJ)V
+	public static synthetic fun compact$default (Lcom/ghostnode/core/crdt/LazyMergeSet;JJILjava/lang/Object;)V
+	public final fun elements ()Ljava/util/Set;
+	public final fun getLatestState ()Lcom/ghostnode/core/crdt/LWWElementSet;
+	public final fun lookup (Ljava/lang/Object;)Z
+	public final fun queueMerge (Lcom/ghostnode/core/crdt/LWWElementSet;)V
+}
+
