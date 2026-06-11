@@ -224,6 +224,95 @@ public final class com/ghostnode/core/crdt/LazyMergeSet {
 	public final fun queueMerge (Lcom/ghostnode/core/crdt/LWWElementSet;)V
 }
 
+public final class com/ghostnode/core/crdt/MapOperation {
+	public static final field Companion Lcom/ghostnode/core/crdt/MapOperation$Companion;
+	public fun <init> (Ljava/lang/String;Lcom/ghostnode/core/crdt/MapOperationType;Ljava/lang/Object;Ljava/lang/Object;JLjava/util/Set;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lcom/ghostnode/core/crdt/MapOperationType;
+	public final fun component3 ()Ljava/lang/Object;
+	public final fun component4 ()Ljava/lang/Object;
+	public final fun component5 ()J
+	public final fun component6 ()Ljava/util/Set;
+	public final fun copy (Ljava/lang/String;Lcom/ghostnode/core/crdt/MapOperationType;Ljava/lang/Object;Ljava/lang/Object;JLjava/util/Set;)Lcom/ghostnode/core/crdt/MapOperation;
+	public static synthetic fun copy$default (Lcom/ghostnode/core/crdt/MapOperation;Ljava/lang/String;Lcom/ghostnode/core/crdt/MapOperationType;Ljava/lang/Object;Ljava/lang/Object;JLjava/util/Set;ILjava/lang/Object;)Lcom/ghostnode/core/crdt/MapOperation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDependencies ()Ljava/util/Set;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getKey ()Ljava/lang/Object;
+	public final fun getTimestamp ()J
+	public final fun getType ()Lcom/ghostnode/core/crdt/MapOperationType;
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public synthetic class com/ghostnode/core/crdt/MapOperation$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public fun <init> (Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;)V
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/ghostnode/core/crdt/MapOperation;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/ghostnode/core/crdt/MapOperation;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/ghostnode/core/crdt/MapOperation$Companion {
+	public final fun serializer (Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;)Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/ghostnode/core/crdt/MapOperationType : java/lang/Enum {
+	public static final field Companion Lcom/ghostnode/core/crdt/MapOperationType$Companion;
+	public static final field PUT Lcom/ghostnode/core/crdt/MapOperationType;
+	public static final field REMOVE Lcom/ghostnode/core/crdt/MapOperationType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/ghostnode/core/crdt/MapOperationType;
+	public static fun values ()[Lcom/ghostnode/core/crdt/MapOperationType;
+}
+
+public final class com/ghostnode/core/crdt/MapOperationType$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/ghostnode/core/crdt/MerkleTree {
+	public static final field INSTANCE Lcom/ghostnode/core/crdt/MerkleTree;
+	public final fun computeRoot (Ljava/util/Collection;)Ljava/lang/String;
+}
+
+public final class com/ghostnode/core/crdt/ORMap {
+	public static final field Companion Lcom/ghostnode/core/crdt/ORMap$Companion;
+	public fun <init> ()V
+	public fun <init> (Lkotlinx/collections/immutable/PersistentMap;)V
+	public synthetic fun <init> (Lkotlinx/collections/immutable/PersistentMap;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lkotlinx/collections/immutable/PersistentMap;
+	public final fun copy (Lkotlinx/collections/immutable/PersistentMap;)Lcom/ghostnode/core/crdt/ORMap;
+	public static synthetic fun copy$default (Lcom/ghostnode/core/crdt/ORMap;Lkotlinx/collections/immutable/PersistentMap;ILjava/lang/Object;)Lcom/ghostnode/core/crdt/ORMap;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get (Ljava/lang/Object;)Ljava/lang/Object;
+	public final fun getOperations ()Lkotlinx/collections/immutable/PersistentMap;
+	public fun hashCode ()I
+	public final fun keys ()Ljava/util/Set;
+	public final fun merge (Lcom/ghostnode/core/crdt/ORMap;)Lcom/ghostnode/core/crdt/ORMap;
+	public final fun put (Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)Lcom/ghostnode/core/crdt/ORMap;
+	public final fun remove (Ljava/lang/String;Ljava/lang/Object;)Lcom/ghostnode/core/crdt/ORMap;
+	public fun toString ()Ljava/lang/String;
+}
+
+public synthetic class com/ghostnode/core/crdt/ORMap$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public fun <init> (Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;)V
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/ghostnode/core/crdt/ORMap;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/ghostnode/core/crdt/ORMap;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/ghostnode/core/crdt/ORMap$Companion {
+	public final fun serializer (Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;)Lkotlinx/serialization/KSerializer;
+}
+
 public final class com/ghostnode/core/crdt/OperationType : java/lang/Enum {
 	public static final field ADD Lcom/ghostnode/core/crdt/OperationType;
 	public static final field Companion Lcom/ghostnode/core/crdt/OperationType$Companion;
@@ -234,6 +323,42 @@ public final class com/ghostnode/core/crdt/OperationType : java/lang/Enum {
 }
 
 public final class com/ghostnode/core/crdt/OperationType$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/ghostnode/core/crdt/PNCounter {
+	public static final field Companion Lcom/ghostnode/core/crdt/PNCounter$Companion;
+	public fun <init> ()V
+	public fun <init> (Lkotlinx/collections/immutable/PersistentMap;Lkotlinx/collections/immutable/PersistentMap;)V
+	public synthetic fun <init> (Lkotlinx/collections/immutable/PersistentMap;Lkotlinx/collections/immutable/PersistentMap;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lkotlinx/collections/immutable/PersistentMap;
+	public final fun component2 ()Lkotlinx/collections/immutable/PersistentMap;
+	public final fun copy (Lkotlinx/collections/immutable/PersistentMap;Lkotlinx/collections/immutable/PersistentMap;)Lcom/ghostnode/core/crdt/PNCounter;
+	public static synthetic fun copy$default (Lcom/ghostnode/core/crdt/PNCounter;Lkotlinx/collections/immutable/PersistentMap;Lkotlinx/collections/immutable/PersistentMap;ILjava/lang/Object;)Lcom/ghostnode/core/crdt/PNCounter;
+	public final fun decrement (Ljava/lang/String;J)Lcom/ghostnode/core/crdt/PNCounter;
+	public static synthetic fun decrement$default (Lcom/ghostnode/core/crdt/PNCounter;Ljava/lang/String;JILjava/lang/Object;)Lcom/ghostnode/core/crdt/PNCounter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getN ()Lkotlinx/collections/immutable/PersistentMap;
+	public final fun getP ()Lkotlinx/collections/immutable/PersistentMap;
+	public final fun getValue ()J
+	public fun hashCode ()I
+	public final fun increment (Ljava/lang/String;J)Lcom/ghostnode/core/crdt/PNCounter;
+	public static synthetic fun increment$default (Lcom/ghostnode/core/crdt/PNCounter;Ljava/lang/String;JILjava/lang/Object;)Lcom/ghostnode/core/crdt/PNCounter;
+	public final fun merge (Lcom/ghostnode/core/crdt/PNCounter;)Lcom/ghostnode/core/crdt/PNCounter;
+	public fun toString ()Ljava/lang/String;
+}
+
+public synthetic class com/ghostnode/core/crdt/PNCounter$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/ghostnode/core/crdt/PNCounter$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/ghostnode/core/crdt/PNCounter;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/ghostnode/core/crdt/PNCounter;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/ghostnode/core/crdt/PNCounter$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
