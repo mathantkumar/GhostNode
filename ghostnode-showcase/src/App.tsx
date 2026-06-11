@@ -1,32 +1,33 @@
 import { useState, useMemo } from 'react';
-import { 
-  Square3Stack3DIcon, 
-  SignalIcon, 
+import {
+  Square3Stack3DIcon,
+  SignalIcon,
   CpuChipIcon,
-  CircleStackIcon, 
-  BoltIcon, 
-  ArrowPathIcon, 
-  PlusIcon, 
-  TrashIcon, 
-  AdjustmentsHorizontalIcon, 
-  DocumentTextIcon, 
+  CircleStackIcon,
+  BoltIcon,
+  ArrowPathIcon,
+  PlusIcon,
+  TrashIcon,
+  AdjustmentsHorizontalIcon,
+  DocumentTextIcon,
   SparklesIcon,
   WifiIcon,
   ServerIcon,
   CheckIcon
 } from '@heroicons/react/24/outline';
-import { 
-  ResponsiveContainer, 
-  AreaChart, 
-  Area, 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  Tooltip, 
-  CartesianGrid 
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid
 } from 'recharts';
 import { useGhostNodeCluster } from './useGhostNode';
+import logo from './assets/logo.svg';
 
 // ==========================================
 // Types & Interfaces for Radix Trie
@@ -134,7 +135,7 @@ const initialTrie: TrieNode = {
 };
 
 function insertWordIntoTrie(
-  root: TrieNode, 
+  root: TrieNode,
   word: string
 ): { newRoot: TrieNode; affected: Set<TrieNode>; shared: Set<TrieNode> } {
   const affected = new Set<TrieNode>();
@@ -195,18 +196,18 @@ function insertWordIntoTrie(
 }
 
 function buildLayout(
-  node: TrieNode, 
-  x: number, 
-  y: number, 
-  spread: number, 
-  depth: number, 
-  affected: Set<TrieNode>, 
-  shared: Set<TrieNode>, 
+  node: TrieNode,
+  x: number,
+  y: number,
+  spread: number,
+  depth: number,
+  affected: Set<TrieNode>,
+  shared: Set<TrieNode>,
   currentPath: string
 ): RenderNode {
   const childrenKeys = Object.keys(node.children).sort();
   const childrenRender: RenderNode[] = [];
-  
+
   childrenKeys.forEach((char, index) => {
     const childNode = node.children[char];
     const childX = x + (index - (childrenKeys.length - 1) / 2) * spread;
@@ -238,8 +239,8 @@ function buildLayout(
 }
 
 function collectElements(
-  node: RenderNode, 
-  nodeList: RenderNode[], 
+  node: RenderNode,
+  nodeList: RenderNode[],
   linkList: RenderLink[]
 ) {
   nodeList.push(node);
@@ -364,7 +365,7 @@ export default function App() {
   const handleTrieInsert = () => {
     if (!trieInput.trim()) return;
     const word = trieInput.trim().toLowerCase();
-    
+
     const { newRoot, affected, shared } = insertWordIntoTrie(trie, word);
     setTrie(newRoot);
     setCopiedNodes(affected);
@@ -421,13 +422,13 @@ export default function App() {
 
       const tokens: React.ReactNode[] = [];
       const parts = line.split(/(\s+|\b)/);
-      
+
       let isComment = false;
 
       for (let j = 0; j < parts.length; j++) {
         const part = parts[j];
-        
-        if (part === '/' && parts[j+1] === '/') {
+
+        if (part === '/' && parts[j + 1] === '/') {
           isComment = true;
           tokens.push(<span key={j} className="text-slate-500 italic">{parts.slice(j).join('')}</span>);
           break;
@@ -441,7 +442,7 @@ export default function App() {
           tokens.push(<span key={j} className="text-amber-400 font-semibold">{part}</span>);
         } else if (part.startsWith('"') || (part.endsWith('"') && part.length > 1)) {
           tokens.push(<span key={j} className="text-emerald-400 font-medium">{part}</span>);
-        } else if (['POSConfiguration', 'GhostNodeMergeEvent', 'String', 'LWWElementSet', 'LWWRegister', 'Bias', 'Map', 'LWWElementSetSerializer', 'LWWElementSetSerializer::class'].includes(part) || (part === 'E' && parts[j-1] === '<')) {
+        } else if (['POSConfiguration', 'GhostNodeMergeEvent', 'String', 'LWWElementSet', 'LWWRegister', 'Bias', 'Map', 'LWWElementSetSerializer', 'LWWElementSetSerializer::class'].includes(part) || (part === 'E' && parts[j - 1] === '<')) {
           tokens.push(<span key={j} className="text-cyan-400 font-medium">{part}</span>);
         } else if (['logger', 'info', 'elements', 'size', 'mergedSet', 'onMergeReceived'].includes(part)) {
           tokens.push(<span key={j} className="text-sky-300 font-medium">{part}</span>);
@@ -512,27 +513,14 @@ export default function App() {
       {/* HEADER */}
       <header className="max-w-7xl mx-auto px-6 py-5 border-b border-slate-200 flex justify-between items-center mb-10 bg-white/70 backdrop-blur-lg rounded-b-2xl shadow-sm">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-indigo-50 border border-indigo-100 rounded-xl">
-            <Square3Stack3DIcon className="w-6 h-6 text-indigo-600 animate-float" />
-          </div>
-          <div>
-            <span className="font-serif text-2xl font-bold bg-gradient-to-r from-indigo-700 to-sky-700 bg-clip-text text-transparent">
-              GhostNode
-            </span>
-            <span className="ml-2.5 font-sans text-[10px] font-extrabold uppercase tracking-widest bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-full px-2.5 py-0.5">
-              Sync Platform
-            </span>
-          </div>
-        </div>
-        <div className="flex items-center gap-2.5 bg-emerald-50 border border-emerald-250 rounded-full px-3.5 py-1.5">
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-          </span>
-          <span className="text-xs font-bold text-emerald-800">
-            Eventual Consistency Active
+          <img src={logo} className="w-8 h-8" alt="GhostNode Logo" />
+          <span className="font-serif text-2xl font-bold bg-gradient-to-r from-indigo-700 to-sky-700 bg-clip-text text-transparent">
+            GhostNode
           </span>
         </div>
+        <span className="font-sans text-[10px] font-extrabold uppercase tracking-widest text-slate-600">
+          Sync Platform
+        </span>
       </header>
 
       {/* HERO SECTION */}
@@ -602,13 +590,12 @@ export default function App() {
               const isCollapsed = !inspectorsOpen[node.id];
 
               return (
-                <div 
-                  key={node.id} 
-                  className={`bg-white border rounded-2xl p-6 transition-all duration-300 shadow-sm hover:shadow-md ${
-                    node.isOnline 
-                      ? 'border-slate-200' 
+                <div
+                  key={node.id}
+                  className={`bg-white border rounded-2xl p-6 transition-all duration-300 shadow-sm hover:shadow-md ${node.isOnline
+                      ? 'border-slate-200'
                       : 'border-rose-200 bg-rose-50/10'
-                  }`}
+                    }`}
                 >
                   {/* Node Header */}
                   <div className="flex justify-between items-center mb-3">
@@ -626,25 +613,22 @@ export default function App() {
                     <button
                       id={`toggle-${node.id.replace(/\s+/g, '-').toLowerCase()}`}
                       onClick={() => toggleOnline(node.id)}
-                      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                        node.isOnline ? 'bg-indigo-600' : 'bg-slate-300'
-                      }`}
+                      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${node.isOnline ? 'bg-indigo-600' : 'bg-slate-300'
+                        }`}
                     >
                       <span
-                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                          node.isOnline ? 'translate-x-5' : 'translate-x-0'
-                        }`}
+                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${node.isOnline ? 'translate-x-5' : 'translate-x-0'
+                          }`}
                       />
                     </button>
                   </div>
 
                   {/* Online Tag */}
                   <div className="mb-4">
-                    <span className={`inline-flex items-center gap-1.5 text-xs font-bold rounded-full px-2.5 py-0.5 ${
-                      node.isOnline 
-                        ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' 
+                    <span className={`inline-flex items-center gap-1.5 text-xs font-bold rounded-full px-2.5 py-0.5 ${node.isOnline
+                        ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
                         : 'bg-rose-50 text-rose-800 border border-rose-200'
-                    }`}>
+                      }`}>
                       {node.isOnline ? (
                         <>
                           <WifiIcon className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -669,12 +653,12 @@ export default function App() {
                     ) : (
                       <div className="flex flex-wrap gap-2">
                         {visibleItems.map(item => (
-                          <span 
-                            key={item} 
+                          <span
+                            key={item}
                             className="inline-flex items-center gap-1 text-sm bg-white border border-slate-200 px-3 py-1 rounded-lg text-slate-900 shadow-sm font-semibold hover:border-slate-300 transition"
                           >
                             {item}
-                            <button 
+                            <button
                               onClick={() => removeItem(node.id, item)}
                               className="text-rose-500 hover:text-rose-700 ml-1.5 p-0.5 rounded hover:bg-rose-50"
                               title="Delete Item"
@@ -716,7 +700,7 @@ export default function App() {
                       <span>Local State JSON</span>
                       <span className="bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded px-2 py-0.5">{isCollapsed ? 'Show' : 'Hide'}</span>
                     </button>
-                    
+
                     {!isCollapsed && (
                       <div className="mt-3.5 rounded-xl border border-slate-950 overflow-hidden shadow-md">
                         <div className="bg-slate-900 px-4 py-2 border-b border-slate-800 flex items-center gap-1.5">
@@ -727,12 +711,12 @@ export default function App() {
                         </div>
                         <pre className="bg-slate-950 text-slate-200 text-[11.5px] p-4 overflow-x-auto max-h-[190px] font-mono leading-relaxed console-scrollbar">
                           {JSON.stringify(
-                            { 
-                              addSet: node.addSet, 
+                            {
+                              addSet: node.addSet,
                               removeSet: node.removeSet,
-                              visible: visibleItems 
-                            }, 
-                            null, 
+                              visible: visibleItems
+                            },
+                            null,
                             2
                           )}
                         </pre>
@@ -760,11 +744,10 @@ export default function App() {
             id="sync-replicas-btn"
             onClick={triggerMerge}
             disabled={onlineCount === 0}
-            className={`w-full md:w-auto font-sans font-bold flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl shadow-lg transition duration-200 ${
-              onlineCount === 0
+            className={`w-full md:w-auto font-sans font-bold flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl shadow-lg transition duration-200 ${onlineCount === 0
                 ? 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none border border-slate-350'
                 : 'bg-indigo-600 hover:bg-indigo-700 text-white hover:shadow-xl hover:shadow-indigo-100 active:scale-[0.98]'
-            }`}
+              }`}
           >
             <ArrowPathIcon className={`w-5 h-5 ${onlineCount > 0 ? 'animate-spin' : ''}`} style={{ animationDuration: '3s' }} />
             Synchronize Cluster State
@@ -851,17 +834,17 @@ export default function App() {
               </p>
 
               <div className="flex gap-2.5 mb-6">
-                <input 
+                <input
                   id="trie-insert-input"
-                  type="text" 
+                  type="text"
                   value={trieInput}
                   onChange={(e) => setTrieInput(e.target.value)}
-                  placeholder="Insert word (e.g. apricot)..." 
+                  placeholder="Insert word (e.g. apricot)..."
                   className="input-text flex-grow"
                   onKeyDown={(e) => e.key === 'Enter' && handleTrieInsert()}
                 />
-                <button 
-                  id="trie-insert-btn" 
+                <button
+                  id="trie-insert-btn"
                   className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-5 py-2.5 rounded-xl shadow-sm hover:shadow transition active:scale-95"
                   onClick={handleTrieInsert}
                 >
@@ -974,33 +957,30 @@ export default function App() {
             <div className="flex bg-slate-200 border border-slate-300 p-1.5 rounded-2xl shadow-sm">
               <button
                 id="tab-telemetry-btn"
-                className={`px-6 py-2.5 text-sm font-bold rounded-xl transition-all duration-200 ${
-                  activeTab === 'telemetry' 
-                    ? 'bg-white text-indigo-900 border border-slate-200 shadow-sm font-extrabold' 
+                className={`px-6 py-2.5 text-sm font-bold rounded-xl transition-all duration-200 ${activeTab === 'telemetry'
+                    ? 'bg-white text-indigo-900 border border-slate-200 shadow-sm font-extrabold'
                     : 'text-slate-800 hover:text-slate-900 hover:bg-slate-100'
-                }`}
+                  }`}
                 onClick={() => setActiveTab('telemetry')}
               >
                 Telemetry Dashboard
               </button>
               <button
                 id="tab-compaction-btn"
-                className={`px-6 py-2.5 text-sm font-bold rounded-xl transition-all duration-200 ${
-                  activeTab === 'compaction' 
-                    ? 'bg-white text-indigo-900 border border-slate-200 shadow-sm font-extrabold' 
+                className={`px-6 py-2.5 text-sm font-bold rounded-xl transition-all duration-200 ${activeTab === 'compaction'
+                    ? 'bg-white text-indigo-900 border border-slate-200 shadow-sm font-extrabold'
                     : 'text-slate-800 hover:text-slate-900 hover:bg-slate-100'
-                }`}
+                  }`}
                 onClick={() => setActiveTab('compaction')}
               >
                 JVM Garbage Compaction
               </button>
               <button
                 id="tab-integration-btn"
-                className={`px-6 py-2.5 text-sm font-bold rounded-xl transition-all duration-200 ${
-                  activeTab === 'integration' 
-                    ? 'bg-white text-indigo-900 border border-slate-200 shadow-sm font-extrabold' 
+                className={`px-6 py-2.5 text-sm font-bold rounded-xl transition-all duration-200 ${activeTab === 'integration'
+                    ? 'bg-white text-indigo-900 border border-slate-200 shadow-sm font-extrabold'
                     : 'text-slate-800 hover:text-slate-900 hover:bg-slate-100'
-                }`}
+                  }`}
                 onClick={() => setActiveTab('integration')}
               >
                 Spring Starter Configuration
@@ -1015,7 +995,7 @@ export default function App() {
                 <SignalIcon className="w-6 h-6 text-indigo-600 stroke-[2.2]" />
                 Micrometer Telemetry Board (Last 10 Runs)
               </h3>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Latency Area Chart */}
                 <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 shadow-inner">
@@ -1027,8 +1007,8 @@ export default function App() {
                       <AreaChart data={history}>
                         <defs>
                           <linearGradient id="colorLatency" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#6366f1" stopOpacity={0.25}/>
-                            <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
+                            <stop offset="5%" stopColor="#6366f1" stopOpacity={0.25} />
+                            <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
                           </linearGradient>
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#cbd5e1" />
@@ -1079,7 +1059,7 @@ export default function App() {
                   <p className="text-xs text-slate-800 font-semibold leading-relaxed mb-4">
                     When data is removed, CRDTs retain "tombstones" to prevent replicas from resurrecting deleted objects during synchronization cycles. Compaction policy sweeps these tombstones out of JVM heap storage after a specified time threshold (TTL).
                   </p>
-                  
+
                   <div className="p-4 bg-slate-950 rounded-xl border border-slate-805 text-xs font-mono text-slate-250 space-y-2 mb-4 shadow-sm select-none">
                     <div className="text-slate-500 italic"># Spring Properties compaction scheduling</div>
                     <div>ghostnode.compaction.threshold-ms=<span className="text-emerald-400">86400000</span></div>
@@ -1092,17 +1072,17 @@ export default function App() {
                       <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">Tombstone TTL:</span>
                       <span className="text-xs font-mono font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 rounded px-2 py-0.5">{compactionTtl} seconds</span>
                     </div>
-                    <input 
+                    <input
                       id="tombstone-ttl-slider"
-                      type="range" 
-                      min="5" 
-                      max="60" 
-                      value={compactionTtl} 
-                      onChange={(e) => setCompactionTtl(parseInt(e.target.value))} 
+                      type="range"
+                      min="5"
+                      max="60"
+                      value={compactionTtl}
+                      onChange={(e) => setCompactionTtl(parseInt(e.target.value))}
                       className="w-full accent-indigo-600 my-2"
                     />
-                    <button 
-                      id="tombstone-compact-btn" 
+                    <button
+                      id="tombstone-compact-btn"
                       className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold w-full py-2.5 rounded-xl text-xs mt-3.5 shadow-sm hover:shadow transition"
                       onClick={handleCompaction}
                     >
@@ -1177,11 +1157,10 @@ export default function App() {
                     {/* Tab 1: Kotlin file */}
                     <button
                       onClick={() => setIntegrationSubTab('kotlin')}
-                      className={`px-4 py-2 text-xs font-mono font-semibold rounded-t-lg transition flex items-center gap-2 border-t border-x ${
-                        integrationSubTab === 'kotlin' 
-                          ? 'bg-slate-950 text-sky-400 border-slate-800' 
+                      className={`px-4 py-2 text-xs font-mono font-semibold rounded-t-lg transition flex items-center gap-2 border-t border-x ${integrationSubTab === 'kotlin'
+                          ? 'bg-slate-950 text-sky-400 border-slate-800'
                           : 'bg-transparent text-slate-500 border-transparent hover:bg-slate-900/40 hover:text-slate-300'
-                      }`}
+                        }`}
                     >
                       <span className="w-2.5 h-2.5 rounded-full bg-purple-500"></span>
                       POSConfiguration.kt
@@ -1190,11 +1169,10 @@ export default function App() {
                     {/* Tab 2: YAML file */}
                     <button
                       onClick={() => setIntegrationSubTab('yaml')}
-                      className={`px-4 py-2 text-xs font-mono font-semibold rounded-t-lg transition flex items-center gap-2 border-t border-x ${
-                        integrationSubTab === 'yaml' 
-                          ? 'bg-slate-950 text-sky-400 border-slate-800' 
+                      className={`px-4 py-2 text-xs font-mono font-semibold rounded-t-lg transition flex items-center gap-2 border-t border-x ${integrationSubTab === 'yaml'
+                          ? 'bg-slate-950 text-sky-400 border-slate-800'
                           : 'bg-transparent text-slate-500 border-transparent hover:bg-slate-900/40 hover:text-slate-300'
-                      }`}
+                        }`}
                     >
                       <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
                       application.yml
@@ -1203,11 +1181,10 @@ export default function App() {
                     {/* Tab 3: Surrogate file */}
                     <button
                       onClick={() => setIntegrationSubTab('surrogate')}
-                      className={`px-4 py-2 text-xs font-mono font-semibold rounded-t-lg transition flex items-center gap-2 border-t border-x ${
-                        integrationSubTab === 'surrogate' 
-                          ? 'bg-slate-950 text-sky-400 border-slate-800' 
+                      className={`px-4 py-2 text-xs font-mono font-semibold rounded-t-lg transition flex items-center gap-2 border-t border-x ${integrationSubTab === 'surrogate'
+                          ? 'bg-slate-950 text-sky-400 border-slate-800'
                           : 'bg-transparent text-slate-500 border-transparent hover:bg-slate-900/40 hover:text-slate-300'
-                      }`}
+                        }`}
                     >
                       <span className="w-2.5 h-2.5 rounded-full bg-purple-500"></span>
                       SerializationSurrogate.kt
@@ -1234,7 +1211,7 @@ export default function App() {
                     )}
                   </button>
                 </div>
-                
+
                 {/* Editor Content Area */}
                 <div className="p-5 overflow-x-auto max-h-[380px] console-scrollbar bg-slate-950">
                   {integrationSubTab === 'kotlin' && renderKotlinHighlight(CODE_SNIPPETS.kotlin)}

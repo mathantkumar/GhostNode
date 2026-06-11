@@ -1,4 +1,8 @@
-# GhostNode
+<p align="center">
+  <img src="assets/logo.svg" alt="GhostNode Logo" width="100"/>
+</p>
+
+<h1 align="center">GhostNode</h1>
 
 <p align="center">
   <img src="assets/banner.png" alt="GhostNode Banner" width="800"/>
