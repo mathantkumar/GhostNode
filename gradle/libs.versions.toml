@@ -4,6 +4,7 @@ kotlinx-collections-immutable = "0.3.8"
 kotlinx-serialization = "1.8.0"
 micrometer = "1.14.3"
 spring-boot = "3.4.2"
+h2 = "2.2.224"
 slf4j = "2.0.16"
 junit = "5.11.4"
 kotlinx-binarycompatibilityvalidator = "0.16.3"
@@ -17,6 +18,8 @@ slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "spring-boot" }
 spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
+spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot" }
+h2 = { module = "com.h2database:h2", version.ref = "h2" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

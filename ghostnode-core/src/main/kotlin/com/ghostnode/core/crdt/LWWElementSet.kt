@@ -13,6 +13,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import org.slf4j.LoggerFactory
 
+@Deprecated("Use CausalLedgerSerializer instead", ReplaceWith("CausalLedgerSerializer"))
 class LWWElementSetSerializer<E>(
     elementSerializer: KSerializer<E>
 ) : KSerializer<LWWElementSet<E>> {
@@ -50,6 +51,7 @@ private data class LWWElementSetSurrogate<E>(
 /**
  * An immutable **LWW-Element-Set** (Last-Writer-Wins Element Set) CRDT.
  */
+@Deprecated("Use CausalLedger instead", ReplaceWith("CausalLedger"))
 @Serializable(with = LWWElementSetSerializer::class)
 data class LWWElementSet<E>(
     val addSet: PersistentMap<E, LWWRegister<E>> = persistentMapOf(),

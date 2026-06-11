@@ -27,6 +27,7 @@ import com.ghostnode.core.clock.VectorClock
  *
  * @param T the type of the replicated value being resolved.
  */
+@Deprecated("Use CausalLedger convergence rules instead")
 fun interface ConflictResolver<T> {
 
     /**

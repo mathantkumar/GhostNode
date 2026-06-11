@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
  * A wrapper for [LWWElementSet] that buffers incoming merge states
  * and merges them lazily/on-demand. Thread-safe.
  */
+@Deprecated("Use CausalLedger instead")
 class LazyMergeSet<E>(
     initialState: LWWElementSet<E> = LWWElementSet()
 ) {

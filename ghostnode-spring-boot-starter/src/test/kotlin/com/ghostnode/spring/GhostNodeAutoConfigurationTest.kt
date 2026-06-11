@@ -88,6 +88,7 @@ class GhostNodeAutoConfigurationTest {
     open class TestConfig {
         @Bean
         open fun mergeListener() = ApplicationListener<GhostNodeMergeEvent<*>> { event ->
+            @Suppress("UNCHECKED_CAST")
             receivedEvent.set(event as GhostNodeMergeEvent<String>)
         }
     }

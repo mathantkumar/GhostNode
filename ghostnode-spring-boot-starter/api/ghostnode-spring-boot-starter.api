@@ -16,6 +16,11 @@ public final class com/ghostnode/spring/GhostNodeEventPublisher {
 	public final fun publishMerge (Lcom/ghostnode/core/crdt/LWWElementSet;)V
 }
 
+public class com/ghostnode/spring/GhostNodeJpaAutoConfiguration {
+	public fun <init> ()V
+	public fun databaseConvergenceService (Lcom/ghostnode/spring/persistence/CausalOperationRepository;)Lcom/ghostnode/spring/persistence/DatabaseConvergenceService;
+}
+
 public final class com/ghostnode/spring/GhostNodeMergeEvent : org/springframework/context/ApplicationEvent {
 	public fun <init> (Ljava/lang/Object;Lcom/ghostnode/core/crdt/LWWElementSet;)V
 	public final fun getResolvedState ()Lcom/ghostnode/core/crdt/LWWElementSet;
@@ -55,5 +60,37 @@ public final class com/ghostnode/spring/GhostNodeRegistry {
 	public final fun getLazy (Ljava/lang/String;)Lcom/ghostnode/core/crdt/LazyMergeSet;
 	public final fun register (Ljava/lang/String;Lcom/ghostnode/core/crdt/LWWElementSet;)V
 	public final fun registerLazy (Ljava/lang/String;Lcom/ghostnode/core/crdt/LazyMergeSet;)V
+}
+
+public final class com/ghostnode/spring/persistence/CausalOperationEntity {
+	public static final field Companion Lcom/ghostnode/spring/persistence/CausalOperationEntity$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Lcom/ghostnode/core/crdt/OperationType;Ljava/lang/String;JLjava/util/Set;)V
+	public synthetic fun <init> (Ljava/lang/String;Lcom/ghostnode/core/crdt/OperationType;Ljava/lang/String;JLjava/util/Set;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getDependencies ()Ljava/util/Set;
+	public final fun getElement ()Ljava/lang/String;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getTimestamp ()J
+	public final fun getType ()Lcom/ghostnode/core/crdt/OperationType;
+	public final fun setDependencies (Ljava/util/Set;)V
+	public final fun setElement (Ljava/lang/String;)V
+	public final fun setId (Ljava/lang/String;)V
+	public final fun setTimestamp (J)V
+	public final fun setType (Lcom/ghostnode/core/crdt/OperationType;)V
+	public final fun toModel ()Lcom/ghostnode/core/crdt/CausalOperation;
+}
+
+public final class com/ghostnode/spring/persistence/CausalOperationEntity$Companion {
+	public final fun fromModel (Lcom/ghostnode/core/crdt/CausalOperation;)Lcom/ghostnode/spring/persistence/CausalOperationEntity;
+}
+
+public abstract interface class com/ghostnode/spring/persistence/CausalOperationRepository : org/springframework/data/jpa/repository/JpaRepository {
+}
+
+public class com/ghostnode/spring/persistence/DatabaseConvergenceService {
+	public fun <init> (Lcom/ghostnode/spring/persistence/CausalOperationRepository;)V
+	public fun applyLocalOperation (Ljava/lang/String;Lcom/ghostnode/core/crdt/OperationType;Ljava/lang/String;)Lcom/ghostnode/core/crdt/CausalLedger;
+	public fun loadLedger ()Lcom/ghostnode/core/crdt/CausalLedger;
+	public fun syncWithRemoteOperations (Ljava/util/List;)Lcom/ghostnode/core/crdt/CausalLedger;
 }
 

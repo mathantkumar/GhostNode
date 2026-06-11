@@ -19,6 +19,7 @@ import kotlinx.serialization.Serializable
  *   at which this value was written.
  * @property clock the [VectorClock] capturing the causal context of this write.
  */
+@Deprecated("Use CausalOperation instead", ReplaceWith("CausalOperation"))
 @Serializable
 data class LWWRegister<T>(
     val value: T,

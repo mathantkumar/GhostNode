@@ -23,6 +23,7 @@ import com.ghostnode.core.clock.VectorClock
  *
  * @param E the element type of the LWW-Element-Set.
  */
+@Deprecated("Use CausalLedger convergence rules instead")
 class LWWElementSetResolver<E> : ConflictResolver<LWWElementSet<E>> {
 
     override fun resolve(

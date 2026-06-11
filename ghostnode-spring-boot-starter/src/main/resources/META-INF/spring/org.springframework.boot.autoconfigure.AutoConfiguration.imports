@@ -1,1 +1,2 @@
 com.ghostnode.spring.GhostNodeAutoConfiguration
+com.ghostnode.spring.GhostNodeJpaAutoConfiguration
