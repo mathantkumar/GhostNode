@@ -1,0 +1,66 @@
+name: 🐛 Bug Report
+description: Report a bug to help improve GhostNode
+title: "[BUG]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to report a bug! Please fill out the details below so we can reproduce and fix the issue quickly.
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: Provide a clear and concise description of the bug.
+      placeholder: E.g., Vector clocks concurrency check is returning INCORRECT relation order under X circumstance.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Step-by-step instructions or code to reproduce the issue.
+      placeholder: |
+        1. Initialize VectorClock A and B...
+        2. Call clock.increment()...
+        3. See error...
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment Details
+      description: OS version, Kotlin version, JDK version, and Spring Boot version if applicable.
+      placeholder: E.g., macOS, Kotlin 2.0.0, JDK 21, Spring Boot 3.3.0
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: Describe what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: Describe what actually happened.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or Stack Traces
+      description: Paste any relevant console output or stack traces here.
+      render: shell
+  - type: checkboxes
+    id: checkboxes
+    attributes:
+      label: Checklist
+      description: Please verify the following before submitting.
+      options:
+        - label: I have searched the existing issues to ensure this bug has not already been reported.
+          required: true
+        - label: I have verified this issue occurs on the latest version of GhostNode.
+          required: true
