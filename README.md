@@ -38,6 +38,8 @@ By utilizing a Causal History Operation Log (OR-Set) consistency model, GhostNod
   - [1. Causality Tracking with Vector Clocks](#1-causality-tracking-with-vector-clocks)
   - [2. Causal Ledger Operation Log (OR-Set)](#2-causal-ledger-operation-log-or-set)
   - [3. Event Sourcing & Database Convergence](#3-event-sourcing--database-convergence)
+  - [4. Multi-Model CRDTs (PN-Counter & OR-Map)](#4-multi-model-crdts-pn-counter--or-map)
+  - [5. State Verification with Merkle Trees](#5-state-verification-with-merkle-trees)
 - [⚙️ Production & Enterprise Capabilities](#️-production--enterprise-capabilities)
   - [Spring Boot Persistence Auto-Configuration](#spring-boot-persistence-auto-configuration)
   - [Telemetry & Observability](#telemetry--observability)
@@ -50,6 +52,8 @@ By utilizing a Causal History Operation Log (OR-Set) consistency model, GhostNod
 
 * ⏰ **Immutable Vector Clocks**: Tracks causality, concurrency, and logical time ordering across node clusters using copy-on-write persistent maps. See [VectorClock.kt](ghostnode-core/src/main/kotlin/com/ghostnode/core/clock/VectorClock.kt).
 * 🔄 **Causal History Log (OR-Set CRDT)**: Implements an Observed-Remove Set (OR-Set) logic. Mutations are modeled as `CausalOperation`s tracking explicit dependencies. Merging is a simple log union: `merge(other) = operations + other.operations`. See [CausalLedger.kt](ghostnode-core/src/main/kotlin/com/ghostnode/core/crdt/CausalLedger.kt).
+* 🔢 **Multi-Model CRDTs (PN-Counter & OR-Map)**: Extends target edge states using state-based **Positive-Negative Counters** for inventory and **Observed-Remove Maps** for concurrent key-value order checklist states. See [PNCounter.kt](ghostnode-core/src/main/kotlin/com/ghostnode/core/crdt/PNCounter.kt) and [ORMap.kt](ghostnode-core/src/main/kotlin/com/ghostnode/core/crdt/ORMap.kt).
+* 🌲 **Merkle Tree State Verification**: Automatically computes binary hash trees over local logs for instant $O(1)$ state convergence verification and highly efficient delta transfers. See [MerkleTree.kt](ghostnode-core/src/main/kotlin/com/ghostnode/core/crdt/MerkleTree.kt).
 * 🌳 **Zero Full-Duplication JVM GC Performance**: Built on top of `kotlinx-collections-immutable` using Radix-Trie path copying. Mutation states share memory references, avoiding heap pressure.
 * 💾 **Database Convergence Guarantees**: A transactional synchronization service that performs upserts of missing causal logs on relational databases, guaranteeing identical converged application states on all replicas. See [DatabaseConvergenceService.kt](ghostnode-spring-boot-starter/src/main/kotlin/com/ghostnode/spring/persistence/DatabaseConvergenceService.kt).
 * 🧩 **Conditional Spring Boot Starter**: Auto-configures and boot-straps JPA scanning and database convergence repositories only when a `DataSource` is present. See [GhostNodeJpaAutoConfiguration.kt](ghostnode-spring-boot-starter/src/main/kotlin/com/ghostnode/spring/GhostNodeJpaAutoConfiguration.kt).
@@ -148,6 +152,44 @@ val ledgerB = CausalLedger<String>().applyOperation(op3) // concurrent addition
 // Event logs merge commutatively and deterministically
 val converged = ledgerA.merge(ledgerB)
 println(converged.elements()) // Converges to union of both additions
+```
+
+### 4. Multi-Model CRDTs (PN-Counter & OR-Map)
+
+Track inventory changes using PN-Counters and check lists or options using OR-Maps.
+
+```kotlin
+import com.ghostnode.core.crdt.PNCounter
+import com.ghostnode.core.crdt.ORMap
+
+// --- Positive-Negative Counter for Inventory ---
+var inventory = PNCounter()
+inventory = inventory.increment("node-a", 10)
+inventory = inventory.decrement("node-b", 3)
+
+println(inventory.value) // Output: 7
+
+// --- Observed-Remove Map for Table Orders ---
+var orders = ORMap<String, String>()
+orders = orders.put("node-a", "table-1", "espresso")
+orders = orders.remove("node-a", "table-1")
+
+println(orders.get("table-1")) // Output: null
+```
+
+### 5. State Verification with Merkle Trees
+
+Validate cluster convergence efficiently using binary Merkle Root checks.
+
+```kotlin
+import com.ghostnode.core.crdt.MerkleTree
+
+// Build Merkle Trees representing local logs
+val treeA = MerkleTree.build(ledgerA.operations.values)
+val treeB = MerkleTree.build(converged.operations.values)
+
+// If roots are identical, states are identical
+println(treeA.rootHash == treeB.rootHash) // Output: false (before sync)
 ```
 
 ---
