@@ -5,10 +5,6 @@
 <h1 align="center">GhostNode</h1>
 
 <p align="center">
-  <img src="assets/banner.png" alt="GhostNode Banner" width="800"/>
-</p>
-
-<p align="center">
   <strong>A high-performance, memory-optimized Kotlin library for Causal History Operation Logs (OR-Set CRDT) and database-level convergence guarantees in distributed and offline-first systems.</strong>
 </p>
 
