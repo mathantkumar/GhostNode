@@ -181,11 +181,11 @@ Validate cluster convergence efficiently using binary Merkle Root checks.
 import com.ghostnode.core.crdt.MerkleTree
 
 // Build Merkle Trees representing local logs
-val treeA = MerkleTree.build(ledgerA.operations.values)
-val treeB = MerkleTree.build(converged.operations.values)
+val rootA = MerkleTree.computeRoot(ledgerA.operations.values)
+val rootB = MerkleTree.computeRoot(converged.operations.values)
 
 // If roots are identical, states are identical
-println(treeA.rootHash == treeB.rootHash) // Output: false (before sync)
+println(rootA == rootB) // Output: false (before sync)
 ```
 
 ---
@@ -205,7 +205,26 @@ When a database connection pool (`DataSource`) is detected on the classpath, Spr
 
 ### Telemetry & Observability
 
-GhostNode is pre-instrumented with **Micrometer** telemetry. When a `MeterRegistry` bean is available, metrics such as CRDT state sizes, merge duration timers, and conflict-resolution counters are registered automatically.
+GhostNode is pre-instrumented with **Micrometer** telemetry. When a `MeterRegistry` bean is available, metrics such as CRDT state sizes, merge duration timers, and conflict-resolution counters (like `ghostnode.causal.drift`) are registered automatically.
+
+---
+
+## 🧠 Technical Deep-Dive: GhostNode vs. Automerge vs. Replicache for POS Domains
+
+Building high-throughput, offline-first systems like a Restaurant Point-of-Sale (POS) introduces domain-specific requirements that general-purpose sync systems do not optimize for. Here is a structural comparison of why GhostNode is uniquely suited for this domain (e.g., Toast POS clone):
+
+| Architectural Dimension | GhostNode (Causal History Op-Log) | Automerge (JSON CRDT Document) | Replicache (Client-Side Cache Sync) |
+| :--- | :--- | :--- | :--- |
+| **Data Structure & Model** | Log-based Observed-Remove Set/Map, PN-Counters, and Causal Operation graphs. | Heavy JSON-like multi-type CRDT document tree. | Client-side transactional cache syncing mutation batches. |
+| **Causal Tracking Overhead** | $O(1)$ direct dependencies tracked per mutation, resolving split-brain states deterministically. | Massive operation history (Automerge tracks character-level/node-level history which grows without bound). | Relies on sequential transaction IDs and a central master server to order mutations. |
+| **Database Sync Semantics** | Incremental SQL batch-upserts (`ON CONFLICT`) comparing bucket-level Merkle Tree hashes. | Requires parsing and rewriting heavy JSON/CBOR document snapshots, leading to relational database mapping bottlenecks. | Requires implementing a custom server-side transactional push/pull protocol for sync. |
+| **Memory Footprint** | Extremely low. Uses persistent off-heap buffer allocation (`ByteBuffer.allocateDirect`) and heap-sharing. | Very high memory consumption due to large on-heap tracking structures, leading to JVM GC pauses. | Requires maintaining local IndexedDB state and on-heap caching layer. |
+| **Domain Invariant Enforcement** | Business rules (like preventing served order deletion) are enforced directly on the causal log read path. | Complex conflict resolution requires manual JSON document tree traversal. | Enforced via mutation execution; concurrent offline modifications bypass server rules. |
+
+### Why GhostNode Wins the POS (Toast) Domain:
+1. **Served Orders Remain Served**: In a POS system, if a cashier marks an order as `SERVED` (a terminal state) while another terminal concurrently tries to remove/cancel it offline, GhostNode's read-path logic overrides the delete operation. Automerge or a naive LWW register would let the delete operation win if its timestamp was slightly later.
+2. **Postgres-Native Performance**: GhostNode maps naturally to relational tables. Syncing is a single database transaction using Merkle bucket hashes to exchange and upsert only missing operations (`INSERT ... ON CONFLICT`). Automerge documents cannot be queried with raw SQL, requiring expensive serialization/deserialization cycles on the application server.
+3. **Pruned Off-Heap Storage**: Long-running POS registers run for days on low-spec hardware. GhostNode's off-heap storage and tombstone compaction ensure we do not hit Out-Of-Memory (OOM) errors or trigger GC pauses during peak dining rush hours.
 
 ---
 

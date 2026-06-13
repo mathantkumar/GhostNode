@@ -78,6 +78,22 @@ data class CausalLedger<E>(
             .filterTo(mutableSetOf()) { lookup(it) }
 
     /**
+     * Compacts the causal history log by pruning stable tombstone REMOVE operations
+     * and their targeted ADD operations that are older than [thresholdMs].
+     */
+    fun compact(thresholdMs: Long, now: Long = System.currentTimeMillis()): CausalLedger<E> {
+        val cutoff = now - thresholdMs
+        val removesToCompact = operations.values.filter {
+            it.type == OperationType.REMOVE && it.timestamp < cutoff
+        }
+        val targetedAddIds = removesToCompact.flatMap { it.dependencies }.toSet()
+        val idsToDiscard = removesToCompact.map { it.id }.toSet() + targetedAddIds
+
+        val newOps = operations.filterKeys { it !in idsToDiscard }.toPersistentMap()
+        return CausalLedger(newOps)
+    }
+
+    /**
      * Merges this ledger with [other] by unioning the set of operation logs.
      * This operation is commutative, associative, and idempotent.
      */

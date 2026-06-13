@@ -20,8 +20,9 @@ open class GhostNodeJpaAutoConfiguration {
 
     @Bean
     open fun databaseConvergenceService(
-        repository: CausalOperationRepository
+        repository: CausalOperationRepository,
+        jdbcTemplate: org.springframework.jdbc.core.JdbcTemplate
     ): DatabaseConvergenceService {
-        return DatabaseConvergenceService(repository)
+        return DatabaseConvergenceService(repository, jdbcTemplate)
     }
 }
